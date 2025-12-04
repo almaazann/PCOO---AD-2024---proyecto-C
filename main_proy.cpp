@@ -1,27 +1,60 @@
 #include <iostream>
-#include "biblioteca_proy.cpp"
+#include "Prestamo.cpp"
+#include "Profesor.cpp"
+#include "Estudiante.cpp"
 using namespace std;
 
-
 int main() {
-    Libro l;
-    Estudiante e;
-    Profesor p;
 
-    //De momento no usaré "cin" ni nada, solo mostraré que funcionan los metodos
-    
-    l.setTitulo("El Principito");
-    l.setAutor("Saint-Exupéry");
+    Usuario* usuario;   // Se usa polimorfismo de acuerdo a lo visto en clase
+    int opcion;
 
-    e.setNombre("Miguel");
-    e.setMatricula("12345");
+    cout << "Eres profesor (1) o estudiante (2)? ";
+    cin >> opcion;
 
-    p.setNombre("Dr. Lopez");
-    p.setDepartamento("Literatura");
+    if (opcion == 1){
+        string nombre, departamento;
+        cout << "Nombre del profesor: ";
+        cin.ignore();
+        getline(cin, nombre);
+        cout << "Departamento: ";
+        cin.ignore();
+        getline(cin, departamento);
 
-    l.mostrarInfo();
-    e.mostrarInfo();
-    p.mostrarInfo();
+        usuario = new Profesor(nombre, departamento);
+    }
+    else {
+        string nombre;
+        int matricula;
+        cout << "Nombre del estudiante: ";
+        cin.ignore();
+        getline(cin, nombre);
+        cout << "Matricula (Solo numeros): ";
+        cin >> matricula;
+
+        usuario = new Estudiante(nombre, matricula);
+    }
+
+    // Libro
+    string titulo, autor;
+    cout << "\nTitulo del libro: ";
+    cin.ignore();
+    getline(cin, titulo);
+    cout << "Autor: ";
+    cin.ignore();
+    getline(cin, autor);
+
+    Libro libro(titulo, autor);
+
+    // Fecha
+    Fecha fechaHoy;
+    fechaHoy.solicitarFecha();
+
+    // Crear préstamo
+    Prestamo prestamo(fechaHoy, libro, usuario);
+
+    // Mostrar información
+    prestamo.mostrarInfoPrestamo();
 
     return 0;
 }
